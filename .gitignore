@@ -1,0 +1,14 @@
+# ROS 2 빌드 산출물 (절대 올리지 말 것)
+build/
+install/
+log/
+
+# VS Code 설정 (필요하면 주석 해제해서 공유 가능하지만, 보통 개인 설정이라 제외함)
+.vscode/
+
+# Python 캐시
+__pycache__/
+*.py[cod]
+
+# OS 생성 파일
+.DS_Store
