@@ -154,7 +154,7 @@ private:
         // 4. 오차 계산 및 출력
         auto endTime = std::chrono::steady_clock::now();
         float totalTime = std::chrono::duration<float, std::milli>(endTime - startTime).count();
-        RCLCPP_INFO(this->get_logger(), "err: %d, lvel: %lf, rvel: %lf, time: %lf",steer, vel_msg.x, vel_msg.y, totalTime);
+        RCLCPP_INFO(this->get_logger(), "err: %lf, lvel: %lf, rvel: %lf, time: %lf",error, vel_msg.x, vel_msg.y, totalTime);
         
         vel_pub_->publish(vel_msg);
 
