@@ -10,7 +10,7 @@
 
 class LineTrackerProcessor : public rclcpp::Node {
 public:
-    LineTrackerProcessor() : Node("lane_tracker_node"), mode_(false), k_(0.1), base_vel_(50) {
+    LineTrackerProcessor() : Node("lane_tracker_node"), mode_(false), k_(0.195), base_vel_(100) {
         // 파라미터 선언 및 초기화
         this->declare_parameter("k", 0.13);
         this->declare_parameter("base_vel", 50);

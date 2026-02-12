@@ -10,7 +10,7 @@
 
 class LineTrackerProcessor : public rclcpp::Node {
 public:
-    LineTrackerProcessor() : Node("line_tracker_node"), mode_(false), k_(0.1), base_vel_(50) {
+    LineTrackerProcessor() : Node("line_tracker_node"), mode_(false), k_(0.15), base_vel_(100) {
         this->declare_parameter("k", 0.13);
         this->declare_parameter("base_vel", 50);
             
@@ -134,13 +134,15 @@ private:
         cv::Mat frame = cv::imdecode(cv::Mat(msg->data), cv::IMREAD_COLOR);
         if (frame.empty()) return;
 
-        // 기능별 함수 호출
+        // 전처리
         cv::Mat bin_roi = setROI(frame);
         cv::Mat stats, centroids;
+        // 라인 검출
         int best_idx = findLine(bin_roi, stats, centroids);
-
+        // 
         cv::Mat display = drawResult(bin_roi, stats, best_idx);
 
+        
         // 오차 계산 및 발행
         double error = (bin_roi.cols / 2.0) - last_line_x_;
         geometry_msgs::msg::Vector3 vel_msg;
