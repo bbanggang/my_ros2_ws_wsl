@@ -10,9 +10,12 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
+#include <cmath>
 #include <math.h>
 // OpenCV 라이브러리 추가
 #include <opencv2/opencv.hpp>
+#include <rclcpp/executors.hpp>
+#include <rclcpp/node.hpp>
 
 #define RAD2DEG(x) ((x)*180./M_PI)
 
@@ -50,6 +53,7 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
     // 거리 데이터 (m 단위)
     float distance = scan->ranges[i];
     float angle_rad = scan->angle_min + scan->angle_increment * i;
+    
 
     // 유효한 거리 데이터인지 확인
     if (std::isfinite(distance) && distance > 0) {
@@ -57,12 +61,36 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
         // x: 오른쪽이 증가 (+ sin)
         // y: 위쪽이 감소 (- cos) -> 0도가 위를 향함
         int x = 250 + (int)(distance * scale * sin(angle_rad));
+        
         int y = 250 + (int)(distance * scale * cos(angle_rad));
+
+
+        // if(angle_rad >= -3.141592 && angle_rad <= -(3.141592 / 2.0)){
+        //     std::cout <<  "sector 1 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
+        //     std::cout << y << std::endl;
+        // }
+        // else if (-(3.141592 / 2.0) <= angle_rad && angle_rad <= 0.0) {
+        //     std::cout <<  "sector 2 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
+        //     std::cout << y << std::endl;
+            
+        // }
+        // else if ( 0.0 <= angle_rad && angle_rad <= 3.141592 / 2.0) {
+        //     std::cout <<  "sector 3 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
+        //     std::cout << y << std::endl;
+            
+        // }
+        // else if( 3.141592 / 2.0  <= angle_rad  && angle_rad <= 3.141592)  {
+        //     std::cout <<  "sector 4 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
+        //     std::cout << y << std::endl;
+        // }
+
 
         // 이미지 범위 내에 있는지 확인 후 그리기
         if (x >= 0 && x < 500 && y >= 0 && y < 500) {
             cv::circle(image, cv::Point(x, y), 2, cv::Scalar(0, 0, 255), -1);
         }
+
+
     }
     // 터미널 출력은 너무 많으므로 주석 처리하거나 필요시 유지
     // printf("[SLLIDAR INFO]: angle-distance : [%f, %f]\n", degree, scan->ranges[i]);
@@ -75,7 +103,7 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
   // 동영상 저장 코드
   if (!is_video_init) {
       // 파일명, 코덱, FPS, 해상도 설정
-      video_writer.open("~/ros2_ws/video/scan_video.avi", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(500, 500), true);
+      video_writer.open("/home/linux/ros2_ws/video/scan_video.mp4", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(500, 500), true);
       is_video_init = true;
       printf("[SLLIDAR INFO]: Video recording started.\n");
   }

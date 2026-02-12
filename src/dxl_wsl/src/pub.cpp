@@ -49,7 +49,7 @@ int main(int argc, char * argv[])
     rclcpp::init(argc, argv);
     auto node = std::make_shared<rclcpp::Node>("node_dxlpub");
     auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10));
-    auto mypub = node->create_publisher<geometry_msgs::msg::Vector3>("topic_dxlpub", qos_profile );
+    auto mypub = node->create_publisher<geometry_msgs::msg::Vector3>("vel_cmd_topic", qos_profile );
     geometry_msgs::msg::Vector3 vel;
     vel.x = 0;
     vel.y = 0;
