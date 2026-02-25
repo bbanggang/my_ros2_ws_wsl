@@ -79,8 +79,8 @@ void LineDetector::draw_result(cv::Mat& result, const cv::Mat& stats, const cv::
     // 1. 좌측 장애물: 초록색 (두께 2로 강화)
     cv::arrowedLine(result, robot_pos, tmp_pt_l, cv::Scalar(0, 255, 0), 2); 
 
-    // 2. 우측 장애물: 노란색으로 변경 (빨간색 점과 구분되게!)
-    cv::arrowedLine(result, robot_pos, tmp_pt_r, cv::Scalar(0, 255, 255), 2); 
+    // 2. 우측 장애물: 빨간색
+    cv::arrowedLine(result, robot_pos, tmp_pt_r, cv::Scalar(0, 0, 255), 2); 
 
     // 3. 목표 방향: 파란색 (두께 3으로 강화)
     int target_x = (tmp_pt_l.x + tmp_pt_r.x) / 2;
@@ -89,26 +89,9 @@ void LineDetector::draw_result(cv::Mat& result, const cv::Mat& stats, const cv::
 
     // 디버깅용 포인트 표시 (색상 반전)
     cv::circle(result, tmp_pt_l, 4, cv::Scalar(0, 255, 0), -1); 
-    cv::circle(result, tmp_pt_r, 4, cv::Scalar(0, 255, 255), -1); // 노란색 점
+    cv::circle(result, tmp_pt_r, 4, cv::Scalar(0, 0, 255), -1); 
 }
 
-// void LineDetector::draw_result(cv::Mat& result, const cv::Mat& stats, const cv::Mat& centroids, int left_idx, int right_idx) {
-//     if (result.channels() == 1) cv::cvtColor(result, result, cv::COLOR_GRAY2BGR);
-//     cv::Point robot_pos(250, 250);
-
-//     // [필독] 화살표 로직: if문 밖으로 완전히 꺼냈습니다. 무조건 나타납니다!
-//     // 1. 좌측 장애물 (초록색)
-//     cv::arrowedLine(result, robot_pos, tmp_pt_l, cv::Scalar(0, 255, 0), 2); 
-//     // 2. 우측 장애물 (빨간색)
-//     cv::arrowedLine(result, robot_pos, tmp_pt_r, cv::Scalar(0, 255, 255), 2); 
-//     // 3. 목표 방향 (파란색)
-//     int target_x = (tmp_pt_l.x + tmp_pt_r.x) / 2;
-//     cv::arrowedLine(result, robot_pos, cv::Point(target_x, 100), cv::Scalar(255, 0, 0), 3);
-
-//     // 검출된 박스만 조건부로 그리기
-//     if (left_idx != -1) cv::rectangle(result, cv::Rect(stats.at<int>(left_idx, 0), stats.at<int>(left_idx, 1), stats.at<int>(left_idx, 2), stats.at<int>(left_idx, 3)), cv::Scalar(0, 255, 0), 2);
-//     if (right_idx != -1) cv::rectangle(result, cv::Rect(stats.at<int>(right_idx, 0), stats.at<int>(right_idx, 1), stats.at<int>(right_idx, 2), stats.at<int>(right_idx, 3)), cv::Scalar(0, 0, 255), 2);
-// }
 
 // preprocess_image, find_target_line, getch, kbhit은 이전 로직과 동일
 
@@ -130,6 +113,10 @@ std::pair<int, int> LineDetector::find_target_line(const cv::Mat& roi, const cv:
         int cx = cvRound(centroids.at<double>(i, 0));
         int cy = cvRound(centroids.at<double>(i, 1));
         double dist = cv::norm(robot_pos - cv::Point(cx, cy));
+
+        // 로봇과 너무 가까운 점은 무시하여 arrowedLine이 화살표를 그릴 수 있도록 수정
+        if (dist < 10.0) continue;
+
         if (cx < 250) { if (dist < min_dist_l) { min_dist_l = dist; l_idx = i; } }
         else { if (dist < min_dist_r) { min_dist_r = dist; r_idx = i; } }
     }
