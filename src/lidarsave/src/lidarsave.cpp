@@ -43,8 +43,8 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
   cv::line(image, cv::Point(250, 245), cv::Point(250, 255), cv::Scalar(0, 0, 0), 1);
   cv::line(image, cv::Point(245, 250), cv::Point(255, 250), cv::Scalar(0, 0, 0), 1);
 
-  // 1m = 250px으로 2m x 2m 창 생성
-  double scale = 250.0; 
+  // 1m = 100px으로 5m x 5m 창 생성
+  double scale = 100.0; 
 
   for (int i = 0; i < count; i++) {
     // float degree = RAD2DEG(scan->angle_min + scan->angle_increment * i);
