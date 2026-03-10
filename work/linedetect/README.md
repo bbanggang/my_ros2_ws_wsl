@@ -25,8 +25,8 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/linedetect_wsl
 
 **실행 결과 1 (5_lt_cw_100rpm_out.mp4 - simulation)**
 
-![https://youtu.be/yAaxHHeXtpc](https://youtu.be/yAaxHHeXtpc)
+[https://youtu.be/yAaxHHeXtpc](https://youtu.be/yAaxHHeXtpc)
 
 **실행결과 2  (7_lt_ccw_100rpm_in.mp4 - simulation)**
 
-![https://youtu.be/0QZvbcTrFS8](https://youtu.be/0QZvbcTrFS8)
+[https://youtu.be/0QZvbcTrFS8](https://youtu.be/0QZvbcTrFS8)
