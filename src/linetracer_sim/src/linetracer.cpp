@@ -11,8 +11,8 @@
 class LineTrackerProcessor : public rclcpp::Node {
 public:
     LineTrackerProcessor() : Node("line_tracker_node"), mode_(false), k_(0.15), base_vel_(100) {
-        this->declare_parameter("k", 0.13);
-        this->declare_parameter("base_vel", 50);
+        this->declare_parameter("k", 0.2);
+        this->declare_parameter("base_vel", 100);
             
         k_ = this->get_parameter("k").as_double();
         base_vel_ = this->get_parameter("base_vel").as_int();
@@ -144,7 +144,7 @@ private:
 
         
         // 오차 계산 및 발행
-        double error = (bin_roi.cols / 2.0) - last_line_x_;
+        double error =  (bin_roi.cols / 2.0) - last_line_x_;
         geometry_msgs::msg::Vector3 vel_msg;
         if (mode_) {
             vel_msg.x = base_vel_ - error * k_;
@@ -154,14 +154,13 @@ private:
         }
         vel_pub_->publish(vel_msg);
 
-        auto endTime = std::chrono::steady_clock::now();
-        float totalTime = std::chrono::duration<float, std::milli>(endTime - startTime).count();
-        RCLCPP_INFO(this->get_logger(), "err:%.2lf lvel:%.2f rvel:%.2f time:%.2f", error,vel_msg.x,vel_msg.y, totalTime);
-
-
         cv::imshow("1. Raw Video", frame);
         cv::imshow("2. Binary Debug", display);
         cv::waitKey(1);
+
+        auto endTime = std::chrono::steady_clock::now();
+        float totalTime = std::chrono::duration<float, std::milli>(endTime - startTime).count();
+        RCLCPP_INFO(this->get_logger(), "err:%.2lf lvel:%.2f rvel:%.2f time:%.2f", error, vel_msg.x,vel_msg.y, totalTime);
     }
 
 
