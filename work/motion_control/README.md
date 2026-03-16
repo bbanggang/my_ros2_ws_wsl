@@ -4,7 +4,7 @@
 
 ### 다음 블럭도를 참고하여 동영상을 이용하여 시뮬레이션을 수행하는 linetracer_sim 패키지를 구현하라
 
-![image.png]([image.png](https://github.com/user-attachments/assets/a3f28536-a11d-4628-b24a-23a30f05a4b2))
+![image.png](https://github.com/user-attachments/assets/71b0fc53-79f8-4c19-8c7b-efe3f99feb7b)
 
 ### linetracer_sim 패키지 세부 기능-> 노드3개, 토픽 2개
 
