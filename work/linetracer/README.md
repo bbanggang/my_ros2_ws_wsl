@@ -4,7 +4,7 @@
 
 ### linetracer_sim 패키지를 이용하여 트랙에서 실험 수행
 
-![image.png](image.png)
+![image.png](https://github.com/user-attachments/assets/46c43384-36d5-4a7a-8b5b-3c6ae273092a)
 
 ### linedetect_nano 패키지 대신 camera_ros2 패키지 사용
 (토픽 주기 30hz, 노드 3개, 토픽 2개)
