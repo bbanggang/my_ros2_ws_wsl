@@ -10,10 +10,10 @@
 
 class LineTrackerProcessor : public rclcpp::Node {
 public:
-    LineTrackerProcessor() : Node("lane_tracker_node"), mode_(false), k_(0.195), base_vel_(100) {
+    LineTrackerProcessor() : Node("lane_tracker_node"), mode_(false), k_(0.14), base_vel_(100) {
         // 파라미터 선언 및 초기화
-        this->declare_parameter("k", 0.13);
-        this->declare_parameter("base_vel", 50);
+        this->declare_parameter("k", 0.14);
+        this->declare_parameter("base_vel", 100);
         k_ = this->get_parameter("k").as_double();
         base_vel_ = this->get_parameter("base_vel").as_int();
 
@@ -28,7 +28,7 @@ public:
         // 초기 차선 위치 설정 (좌측: 160, 우측: 480 부근 가정)
         last_left_x_ = 100.0;
         last_left_y_ = 45.0;
-        last_right_x_ = 550.0;
+        last_right_x_ = 540.0;
         last_right_y_ = 45.0;
         
         RCLCPP_INFO(this->get_logger(), "차선 분석 및 제어 노드 시작. 's': 주행, 'q': 정지");
@@ -58,7 +58,7 @@ private:
 
         for (int i = 1; i < n_labels; i++) {
             int area = stats.at<int>(i, cv::CC_STAT_AREA);
-            if (area < 300) continue;
+            if (area < 100) continue;
 
             double cx = centroids.at<double>(i, 0);
             double cy = centroids.at<double>(i, 1);
@@ -78,7 +78,7 @@ private:
 
         // [2단계] 확정된 위치에서 가장 가까운 blob 인덱스 반환 (검증용)
         l_idx = -1; r_idx = -1;
-        double l_best = 30.0, r_best = 30.0;
+        double l_best = 10.0, r_best = 10.0;
 
         for (int i = 1; i < n_labels; i++) {
             double cx = centroids.at<double>(i, 0);
@@ -99,7 +99,7 @@ private:
 
         for (int i = 1; i < stats.rows; i++) {
             int area = stats.at<int>(i, cv::CC_STAT_AREA);
-            if (area < 300) continue;
+            if (area < 100) continue;
 
             int l = stats.at<int>(i, 0), t = stats.at<int>(i, 1), w = stats.at<int>(i, 2), h = stats.at<int>(i, 3);
             

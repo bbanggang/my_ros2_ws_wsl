@@ -11,8 +11,8 @@
 class LineTrackerProcessor : public rclcpp::Node {
 public:
     LineTrackerProcessor() : Node("line_tracker_node"), mode_(false), k_(0.15), base_vel_(100) {
-        this->declare_parameter("k", 0.2);
-        this->declare_parameter("base_vel", 100);
+        this->declare_parameter("k", 0.15);
+        this->declare_parameter("base_vel", 50);
             
         k_ = this->get_parameter("k").as_double();
         base_vel_ = this->get_parameter("base_vel").as_int();
@@ -42,7 +42,7 @@ private:
         cv::cvtColor(roi, roi, cv::COLOR_BGR2GRAY);
         // ROI 내부 평균 밝기를 이용한 보정
         roi += cv::Scalar(100) - cv::mean(roi); 
-        cv::threshold(roi, roi, 150, 255, cv::THRESH_BINARY);
+        cv::threshold(roi, roi, 152, 255, cv::THRESH_BINARY);
         
         return roi;
     }
@@ -57,7 +57,7 @@ private:
 
         for (int i = 1; i < n_labels; i++) {
             int area = stats.at<int>(i, cv::CC_STAT_AREA);
-            if (area > 100) { // 면적 50 이상만 취급
+            if (area > 100) { // 면적 100 이상만 취급
                 double cx = centroids.at<double>(i, 0);
                 double cy = centroids.at<double>(i, 1);
                 double dist = cv::norm(cv::Point2d(cx, cy) - cv::Point2d(last_line_x_, last_line_y_));
@@ -70,7 +70,7 @@ private:
         }
 
         // 150px 이내에 후보가 있으면 중심점 1차 갱신
-        if (min_index != -1 && min_dist <= 150.0) {
+        if (min_index != -1 && min_dist <= 100.0) {
             last_line_x_ = centroids.at<double>(min_index, 0);
             last_line_y_ = centroids.at<double>(min_index, 1);
         }
@@ -90,8 +90,8 @@ private:
             }
         }
 
-        // 최종 거리가 30px 이내일 때만 유효한 인덱스로 인정
-        if (best > 30.0) {
+        // 최종 거리가 10px 이내일 때만 유효한 인덱스로 인정
+        if (best > 10.0) {
             idx = -1;
         }
         return idx;
@@ -144,7 +144,7 @@ private:
 
         
         // 오차 계산 및 발행
-        double error =  (bin_roi.cols / 2.0) - last_line_x_;
+        double error = (bin_roi.cols / 2.0) - last_line_x_;
         geometry_msgs::msg::Vector3 vel_msg;
         if (mode_) {
             vel_msg.x = base_vel_ - error * k_;
@@ -160,7 +160,7 @@ private:
 
         auto endTime = std::chrono::steady_clock::now();
         float totalTime = std::chrono::duration<float, std::milli>(endTime - startTime).count();
-        RCLCPP_INFO(this->get_logger(), "err:%.2lf lvel:%.2f rvel:%.2f time:%.2f", error, vel_msg.x,vel_msg.y, totalTime);
+        RCLCPP_INFO(this->get_logger(), "err:%.2lf lvel:%.2f rvel:%.2f time:%.2f", error,vel_msg.x,vel_msg.y, totalTime);
     }
 
 
