@@ -26,7 +26,7 @@ public:
         vel_pub_ = this->create_publisher<geometry_msgs::msg::Vector3>("vel_cmd_topic", qos_profile);
 
         // 초기 차선 위치 설정 (좌측: 160, 우측: 480 부근 가정)
-        last_left_x_ = 100.0;
+        last_left_x_ = 150.0;
         last_left_y_ = 45.0;
         last_right_x_ = 540.0;
         last_right_y_ = 45.0;
@@ -58,17 +58,17 @@ private:
 
         for (int i = 1; i < n_labels; i++) {
             int area = stats.at<int>(i, cv::CC_STAT_AREA);
-            if (area < 100) continue;
+            if (area < 300) continue;
 
             double cx = centroids.at<double>(i, 0);
             double cy = centroids.at<double>(i, 1);
 
             if (cx < mid_line) { // 좌측 영역
                 double dist = cv::norm(cv::Point2d(cx, cy) - cv::Point2d(last_left_x_, last_left_y_));
-                if (dist < l_min_dist && dist <= 65.0) { l_min_dist = dist; l_min_idx = i; }
+                if (dist < l_min_dist && dist <= 80.0) { l_min_dist = dist; l_min_idx = i; }
             } else { // 우측 영역
                 double dist = cv::norm(cv::Point2d(cx, cy) - cv::Point2d(last_right_x_, last_right_y_));
-                if (dist < r_min_dist && dist <= 65.0) { r_min_dist = dist; r_min_idx = i; }
+                if (dist < r_min_dist && dist <= 90.0) { r_min_dist = dist; r_min_idx = i; }
             }
         }
 
@@ -78,7 +78,7 @@ private:
 
         // [2단계] 확정된 위치에서 가장 가까운 blob 인덱스 반환 (검증용)
         l_idx = -1; r_idx = -1;
-        double l_best = 10.0, r_best = 10.0;
+        double l_best = 50.0, r_best = 50.0;
 
         for (int i = 1; i < n_labels; i++) {
             double cx = centroids.at<double>(i, 0);
@@ -99,7 +99,7 @@ private:
 
         for (int i = 1; i < stats.rows; i++) {
             int area = stats.at<int>(i, cv::CC_STAT_AREA);
-            if (area < 100) continue;
+            if (area < 300) continue;
 
             int l = stats.at<int>(i, 0), t = stats.at<int>(i, 1), w = stats.at<int>(i, 2), h = stats.at<int>(i, 3);
             
@@ -147,13 +147,13 @@ private:
         }
         vel_pub_->publish(vel_msg);
 
-        auto endTime = std::chrono::steady_clock::now();
-        float totalTime = std::chrono::duration<float, std::milli>(endTime - startTime).count();
-        RCLCPP_INFO(this->get_logger(), "err:%.2lf lvel:%.2f rvel:%.2f time:%.2f", error,vel_msg.x,vel_msg.y, totalTime);
-
         cv::imshow("1. Raw Video", frame);
         cv::imshow("2. Binary Debug", display);
         cv::waitKey(1);
+
+        auto endTime = std::chrono::steady_clock::now();
+        float totalTime = std::chrono::duration<float, std::milli>(endTime - startTime).count();
+        RCLCPP_INFO(this->get_logger(), "err:%.2lf lvel:%.2f rvel:%.2f time:%.2f", error,vel_msg.x,vel_msg.y, totalTime);
     }
 
     // --- 유틸리티 및 키보드 제어 ---
