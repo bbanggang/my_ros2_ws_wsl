@@ -6,7 +6,7 @@
 
 linedetect_wsl 패키지에 라인 검출 알고리즘을 구현하고 2개의 동영상(5_lt_cw_100rpm_out.mp4, 7_lt_ccw_100rpm_in.mp4)을 이용하여 시뮬레이션을 수행하고 결과를 동영상으로 저장
 
-![image.png](image.png)
+![image.png](https://github.com/user-attachments/assets/bd1ec44c-47fe-44a3-b6e1-da47e000c2e9)
 
 Publisher 노드
 - Jestson nano 보드에서 동영상을 입력 받아 영상 토픽을 발행
