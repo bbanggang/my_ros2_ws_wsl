@@ -33,7 +33,7 @@ s키를 누르면 출발, q를 누르면 정지
 ### 패키지명 : lanefollow_sim
 camera_ros2, dxl_nano 패키지를 그대로 활용
 
-- 소스 코드
+### 소스 코드
 
 → camera_ros2
 
@@ -47,12 +47,12 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lanefollow_sim
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
-- 실행 결과
+### 실행 결과
 
-→ robot view
+ robot view
 
 [https://youtu.be/BY9LOYIEzhc](https://youtu.be/BY9LOYIEzhc)
 
-→ human view
+ human view
 
 [https://youtu.be/nXrZac7q140](https://github.com/user-attachments/assets/15d65958-addf-46c6-82fe-8ed1d0d4dbae)
