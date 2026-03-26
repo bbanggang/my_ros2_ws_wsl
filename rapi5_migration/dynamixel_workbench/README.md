@@ -250,8 +250,30 @@ terminate called after throwing an instance of 'YAML::BadFile'
 
 실행 직후 Segfault가 발생했다. GDB 디버깅 결과, `publishCallback` 함수(619줄)에서 `dynamixel_state_list_.dynamixel_state`가 아직 비어 있는 상태에서 접근하여 크래시가 발생한 것으로 확인되었다. `readCallback`이 데이터를 채우기 전에 `publishCallback`이 먼저 호출되는 타이밍 문제였다.
 
-**GDB Backtrace:**
+# GDB 디버깅
 
+### GDB란?
+C/C++ 프로그램이 크래시될 때 원인(파일명, 줄 번호)을 알려주는 디버깅 도구이다.
+
+### 발생한 문제
+`dynamixel_workbench_controllers` 실행 시 모터 인식 직후 `Segmentation fault`로 크래시가 발생했으나, 에러 메시지만으로는 원인을 알 수 없었다.
+
+## GDB 사용 절차
+
+**1. Debug 모드로 빌드**
+```bash
+colcon build --symlink-install --packages-select dynamixel_workbench_controllers --cmake-args -DCMAKE_BUILD_TYPE=Debug
+```
+
+**#2. GDB로 실행**
+```bash
+gdb -ex run -ex bt --args ~/ros2_ws/install/dynamixel_workbench_controllers/lib/dynamixel_workbench_controllers/dynamixel_workbench_controllers
+```
+
+**3. 크래시 발생 시 backtrace(bt) 확인** — #0 프레임이 크래시 위치이다.
+
+## GDB로 확인한 결과
+`dynamixel_workbench_controllers.cpp` 619줄의 `publishCallback` 함수에서 아직 데이터가 채워지지 않은 빈 벡터(`dynamixel_state_list_`)에 접근하여 크래시가 발생한 것을 확인했다.
 ```
 #0 DynamixelController::publishCallback at dynamixel_workbench_controllers.cpp:619
    effort = dxl_wb_->convertValue2Current(
