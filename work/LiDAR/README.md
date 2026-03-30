@@ -3,12 +3,10 @@
 ## 실습 과제 1
 
 ### WSL2에서 라이다 측정데이터를 이용하여 스캔영상을 그려주는 패키지 lidarplot를 완성하시오.
--> /scan 토픽 구독 → (각도, 거리)로 환산 → 스캔 영상 그리기 순서로 처리할 것
+-> /scan 토픽 구독 → (각도, 거리)로 환산 → 스캔 영상 그리기 순서로 처리할 것  
+-> 스캔 영상 그리기는 opencv의 회전변환 또는 삼각함수를 이용  
+→ LIDAR의 좌표축과 OpenCV의 윈도우의 좌표축이 서로 다르므로 아래 코드와 같이 변환  
 
-
-- 스캔 영상 그리기는 opencv의 회전변환 또는 삼각함수를 이용
-
-→ LIDAR의 좌표축과 OpenCV의 윈도우의 좌표축이 서로 다르므로 아래 코드와 같이 변환
 
 ```cpp
 	// 거리 환산 비율 설정: 5m가 500px이므로, 반경 1m가 100px에 해당.
@@ -32,8 +30,7 @@
         }
     }
 ```
-
-- 스캔 영상을 모니터에 출력하고 동시에 동영상(mp4)으로 저장할 것
+-> 스캔 영상을 모니터에 출력하고 동시에 동영상(mp4)으로 저장할 것  
 
 ```cpp
 // 화면에 영상 출력
@@ -48,11 +45,11 @@
   }
 ```
 
-- RPi5 보드에서 sllidar_node를 실행하고 lidarplot 패키지는 wsl2에서 작성하고 실행
+-> RPi5 보드에서 sllidar_node를 실행하고 lidarplot 패키지는 wsl2에서 작성하고 실행  
 
 ![image.png](https://github.com/user-attachments/assets/b8475edb-5f89-43c5-a9ce-7401220ff808)
 
-- 소스 코드
+**소스 코드**
 
 → sllidar_node.cpp
 
@@ -62,7 +59,7 @@ https://github.com/Slamtec/sllidar_ros2/tree/main/src
 
 https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
-- 실행 결과
+**실행 결과**
     
     [녹음 2026-02-12 144035.mp4](https://github.com/user-attachments/assets/2372629a-4945-49f1-91f6-d1112da0d3ab)
     
@@ -79,7 +76,7 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 → LIDAR 방향이 x축이으로 우수계를 사용
 
-![image.png](https://github.com/user-attachments/assets/3c37b625-7d9f-43fb-abb4-16af2a751541)
+![image.png](https://github.com/user-attachments/assets/3c37b625-7d9f-43fb-abb4-16af2a751541)  
 
 
 
@@ -91,13 +88,13 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 → 수신 (약 10번)
 
-![image.png](https://github.com/user-attachments/assets/f8047836-9975-4d6f-b318-ecb31b373b95)
+![image.png](https://github.com/user-attachments/assets/f8047836-9975-4d6f-b318-ecb31b373b95)  
 
 
 
 - 토픽메시지의 크기(KB)는 얼마인가? 5.82KB
 
-![image.png](https://github.com/user-attachments/assets/646d9200-9f84-4649-9ed7-4d8351cd4250)
+![image.png](https://github.com/user-attachments/assets/646d9200-9f84-4649-9ed7-4d8351cd4250)  
 
 
 
@@ -112,7 +109,7 @@ printf("[SLLIDAR INFO]: I heard a laser scan %s[%d]:\n",
 scan->header.frame_id.c_str(), **count**);
 ```
 
-![image.png](https://github.com/user-attachments/assets/e33ab243-d0c8-4d6d-a512-2c923bd91a01)
+![image.png](https://github.com/user-attachments/assets/e33ab243-d0c8-4d6d-a512-2c923bd91a01)  
 
 
 
