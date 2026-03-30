@@ -17,11 +17,11 @@ int main(int argc, char* argv[])
 {
     rclcpp::init(argc, argv);
     auto node = std::make_shared<rclcpp::Node>("camsub_wsl");
-    auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10)); //TCP
-    //auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort(); //UDP
+    // auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10)); //TCP
+    auto qos_profile = rclcpp::QoS(rclcpp::KeepLast(10)).best_effort(); //UDP
     std::function<void(const sensor_msgs::msg::CompressedImage::SharedPtr msg)> fn;
     fn = std::bind(mysub_callback, node, _1);
-    auto mysub = node->create_subscription<sensor_msgs::msg::CompressedImage>("image/compressed",qos_profile,fn);
+    auto mysub = node->create_subscription<sensor_msgs::msg::CompressedImage>("Image_Topic",qos_profile,fn);
     rclcpp::spin(node);
     rclcpp::shutdown();
     return 0;
