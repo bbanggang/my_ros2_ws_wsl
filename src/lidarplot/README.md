@@ -1,4 +1,4 @@
-# sllidar_client.cpp 문서
+# lidarplot 패키지 설명
 
 ## 전체 프로그램 동작 설명
 
