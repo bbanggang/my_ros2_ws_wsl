@@ -64,27 +64,6 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
         
         int y = 250 + (int)(distance * scale * cos(angle_rad));
 
-
-        // if(angle_rad >= -3.141592 && angle_rad <= -(3.141592 / 2.0)){
-        //     std::cout <<  "sector 1 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
-        //     std::cout << y << std::endl;
-        // }
-        // else if (-(3.141592 / 2.0) <= angle_rad && angle_rad <= 0.0) {
-        //     std::cout <<  "sector 2 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
-        //     std::cout << y << std::endl;
-            
-        // }
-        // else if ( 0.0 <= angle_rad && angle_rad <= 3.141592 / 2.0) {
-        //     std::cout <<  "sector 3 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
-        //     std::cout << y << std::endl;
-            
-        // }
-        // else if( 3.141592 / 2.0  <= angle_rad  && angle_rad <= 3.141592)  {
-        //     std::cout <<  "sector 4 : " <<(int)(distance * scale * cos(angle_rad)) << std::endl;
-        //     std::cout << y << std::endl;
-        // }
-
-
         // 이미지 범위 내에 있는지 확인 후 그리기
         if (x >= 0 && x < 500 && y >= 0 && y < 500) {
             cv::circle(image, cv::Point(x, y), 2, cv::Scalar(0, 0, 255), -1);
