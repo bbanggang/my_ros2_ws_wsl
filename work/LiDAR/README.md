@@ -78,8 +78,6 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 ![image.png](https://github.com/user-attachments/assets/3c37b625-7d9f-43fb-abb4-16af2a751541)  
 
-
-
 - Rplidar C1은 1초에 몇 번 토픽메시지를 전송하는가? 10번
 
 → 송신(scan frequency : 10.0 Hz)
@@ -89,8 +87,6 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 → 수신 (약 10번)
 
 ![image.png](https://github.com/user-attachments/assets/f8047836-9975-4d6f-b318-ecb31b373b95)  
-
-
 
 - 토픽메시지의 크기(KB)는 얼마인가? 5.82KB
 
