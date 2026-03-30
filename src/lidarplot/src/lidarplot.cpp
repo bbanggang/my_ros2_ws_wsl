@@ -45,7 +45,7 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
 
   // 거리 환산 비율 설정: 10m가 500px이므로, 반경 5m가 250px에 해당.
   // 즉, 1m = 50px 입니다.
-  double scale = 50.0; 
+  double scale = 100.0; 
 
   for (int i = 0; i < count; i++) {
     // float degree = RAD2DEG(scan->angle_min + scan->angle_increment * i);
