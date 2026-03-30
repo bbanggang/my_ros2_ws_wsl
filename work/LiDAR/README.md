@@ -3,7 +3,8 @@
 ## 실습 과제 1
 
 ### WSL2에서 라이다 측정데이터를 이용하여 스캔영상을 그려주는 패키지 lidarplot를 완성하시오.
-/scan 토픽 구독 → (각도, 거리)로 환산 → 스캔 영상 그리기 순서로 처리할 것
+-> /scan 토픽 구독 → (각도, 거리)로 환산 → 스캔 영상 그리기 순서로 처리할 것
+
 
 - 스캔 영상 그리기는 opencv의 회전변환 또는 삼각함수를 이용
 
@@ -80,6 +81,8 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 ![image.png](https://github.com/user-attachments/assets/3c37b625-7d9f-43fb-abb4-16af2a751541)
 
+
+
 - Rplidar C1은 1초에 몇 번 토픽메시지를 전송하는가? 10번
 
 → 송신(scan frequency : 10.0 Hz)
@@ -90,9 +93,13 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 ![image.png](https://github.com/user-attachments/assets/f8047836-9975-4d6f-b318-ecb31b373b95)
 
+
+
 - 토픽메시지의 크기(KB)는 얼마인가? 5.82KB
 
 ![image.png](https://github.com/user-attachments/assets/646d9200-9f84-4649-9ed7-4d8351cd4250)
+
+
 
 - 메시지 1개당 몇 개의 거리 측정값이 포함되어 있는가? **약** **720번**
 
@@ -107,11 +114,15 @@ scan->header.frame_id.c_str(), **count**);
 
 ![image.png](https://github.com/user-attachments/assets/e33ab243-d0c8-4d6d-a512-2c923bd91a01)
 
+
+
 - 1회전에 몇 번 거리를 측정하는가?
 
 $$
 1회전\space 측정\space 횟수=  \frac{angle\space max -angle\space min}{angle\space increment} = \frac{3.141592 +3.141592}{0.00873} \\ \approx 720( 719.7232531500573)
 $$
+
+
 
 - angle_min, angle_increment 값은 얼마인가?
 
