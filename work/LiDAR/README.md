@@ -76,9 +76,7 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 → LIDAR 방향이 x축이으로 우수계를 사용
 
-![image.png](https://github.com/user-attachments/assets/3c37b625-7d9f-43fb-abb4-16af2a751541)  
-
-    
+![image.png](https://github.com/user-attachments/assets/3c37b625-7d9f-43fb-abb4-16af2a751541)  <br/>
 
 - Rplidar C1은 1초에 몇 번 토픽메시지를 전송하는가? 10번
 
@@ -88,11 +86,11 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 → 수신 (약 10번)
 
-![image.png](https://github.com/user-attachments/assets/f8047836-9975-4d6f-b318-ecb31b373b95)  
+![image.png](https://github.com/user-attachments/assets/f8047836-9975-4d6f-b318-ecb31b373b95)  <br/>
 
 - 토픽메시지의 크기(KB)는 얼마인가? 5.82KB
 
-![image.png](https://github.com/user-attachments/assets/646d9200-9f84-4649-9ed7-4d8351cd4250)  
+![image.png](https://github.com/user-attachments/assets/646d9200-9f84-4649-9ed7-4d8351cd4250)  <br/>
 
 
 
@@ -107,7 +105,7 @@ printf("[SLLIDAR INFO]: I heard a laser scan %s[%d]:\n",
 scan->header.frame_id.c_str(), **count**);
 ```
 
-![image.png](https://github.com/user-attachments/assets/e33ab243-d0c8-4d6d-a512-2c923bd91a01)  
+![image.png](https://github.com/user-attachments/assets/e33ab243-d0c8-4d6d-a512-2c923bd91a01)  <br/>
 
 
 
@@ -116,8 +114,7 @@ scan->header.frame_id.c_str(), **count**);
 $$
 1회전\space 측정\space 횟수=  \frac{angle\space max -angle\space min}{angle\space increment} = \frac{3.141592 +3.141592}{0.00873} \\ \approx 720( 719.7232531500573)
 $$
-
-
+<br/>
 
 - angle_min, angle_increment 값은 얼마인가?
 
