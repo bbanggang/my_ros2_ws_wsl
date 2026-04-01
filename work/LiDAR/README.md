@@ -61,7 +61,7 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
 
 **실행 결과**
     
-    [녹음 2026-02-12 144035.mp4](https://github.com/user-attachments/assets/2372629a-4945-49f1-91f6-d1112da0d3ab)
+[녹음 2026-02-12 144035.mp4](https://github.com/user-attachments/assets/2372629a-4945-49f1-91f6-d1112da0d3ab)
     
 
 → 동영상 저장
