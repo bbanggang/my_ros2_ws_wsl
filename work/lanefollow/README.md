@@ -55,4 +55,4 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
  human view
 
-<video src="https://github.com/user-attachments/assets/15d65958-addf-46c6-82fe-8ed1d0d4dbae" controls width="600"></video>
+[lanefollow_human_view](https://github.com/user-attachments/assets/f43d6d6e-7fc6-407a-bb0a-2de389efd465)
