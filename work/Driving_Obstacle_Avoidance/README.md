@@ -12,7 +12,7 @@
 
 → sllidar_node
 
-src/sllidar_ros2/src
+[src/sllidar_ros2/src](../../src/sllidar_ros2/src)
 
 → dxl_nano (node_dxlsub)
 
@@ -20,11 +20,11 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 → lidarsave
 
-src/lidarsave
+[src/lidarsave](../../src/lidarsave)
 
 → dxl_wsl (node_dxlpub)
 
-src/dxl_wsl
+[src/dxl_wsl](../../src/dxl_wsl)
 
 ![image.png](https://github.com/user-attachments/assets/dfd3ffd5-d337-467b-b363-a6b134f76f68)
 
@@ -44,7 +44,7 @@ src/dxl_wsl
 
 → lidarsim
 
-src/lidarsim
+[src/lidarsim](../../src/lidarsim)
 
 → dxl_nano (node_dxlsub)
 
@@ -65,11 +65,11 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 → sllidar_node
 
-src/sllidar_ros2/src
+[src/sllidar_ros2/src](../../src/sllidar_ros2/src)
 
 → lidardrive
 
-src/lidardrive
+[src/lidardrive](../../src/lidardrive)
 
 → dxl_nano (node_dxlsub)
 

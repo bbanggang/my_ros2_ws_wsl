@@ -53,11 +53,11 @@
 
 → sllidar_node.cpp
 
-src/sllidar_ros2/src
+[src/sllidar_ros2/src](../../src/sllidar_ros2/src)
 
 → lidarplot
 
-src/lidarplot
+[src/lidarplot](../../src/lidarplot)
 
 **실행 결과**
     

@@ -19,9 +19,9 @@ Subscriber 노드
 
 **소스 코드**
 
-src/linedetect_rapi5
+[src/linedetect_rapi5](../../src/linedetect_rapi5)
 
-src/linedetect_wsl
+[src/linedetect_wsl](../../src/linedetect_wsl)
 
 **실행 결과 1 (5_lt_cw_100rpm_out.mp4 - simulation)**
 

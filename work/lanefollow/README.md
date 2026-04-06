@@ -11,11 +11,11 @@ s키를 누르면 출발, q를 누르면 정지
 
 → linedetect_rapi5
 
-src/linedetect_rapi5
+[src/linedetect_rapi5](../../src/linedetect_rapi5)
 
 → lanefollow_sim
 
-src/lanefollow_sim
+[src/lanefollow_sim](../../src/lanefollow_sim)
 
 → dxl_nano
 
@@ -37,11 +37,11 @@ camera_ros2, dxl_nano 패키지를 그대로 활용
 
 → camera_ros2
 
-src/camera_ros2
+[src/camera_ros2](../../src/camera_ros2)
 
 → lanefollow_sim
 
-src/lanefollow_sim
+[src/lanefollow_sim](../../src/lanefollow_sim)
 
 → dxl_nano
 
