@@ -6,9 +6,9 @@
 
 - 라이다는 초당 10번 토픽 전송하므로 동영상은 10fps로 저장
 
-![image.png]([image.png](https://github.com/user-attachments/assets/b694b9a5-599b-4f23-8f58-90976d02b8c0))
+![image.png](https://github.com/user-attachments/assets/b694b9a5-599b-4f23-8f58-90976d02b8c0)
 
-- 소스 코드
+**소스 코드**
 
 → sllidar_node 
 
@@ -26,7 +26,10 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsave
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_wsl
 
-- 실행 결과
+![image.png](https://github.com/user-attachments/assets/dfd3ffd5-d337-467b-b363-a6b134f76f68)
+
+**실행 결과**
+[video](https://github.com/user-attachments/assets/a6c6184c-cda9-4e1e-ac36-c3eea237ea5b)
 
 
 ## 실습 과제 2
@@ -37,7 +40,7 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_wsl
 
 ![image.png](https://github.com/user-attachments/assets/908a0b95-0369-41ca-baef-398eab910d53)
 
-- 소스 코드
+**소스 코드**
 
 → lidarsim 
 
@@ -47,7 +50,10 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsim
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
-- 실행 결과
+![image](https://github.com/user-attachments/assets/3149c62a-fd65-454a-8b08-d87473ba09e3)
+
+**실행 결과**
+[video](https://github.com/user-attachments/assets/93ce2e94-8f77-42c6-ad41-b0ea7787e145)
 
 ## 실습 과제 3
 
@@ -55,7 +61,7 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 ![image.png](https://github.com/user-attachments/assets/e8e7283f-5f91-4b0d-b5f4-55c9a6fd1466)
 
-- 소스 코드
+**소스 코드**
 
 → sllidar_node 
 
@@ -69,6 +75,7 @@ https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidardrive
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
-![image.png](image%204.png)
+![image.png](https://github.com/user-attachments/assets/e18a8613-f556-4563-ae51-32cfa8b25d30)
 
-- 실행 결과
+**실행 결과**
+[video](https://github.com/user-attachments/assets/44690444-04f3-4ae1-b4a0-f4e53207c532)
