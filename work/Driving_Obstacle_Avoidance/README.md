@@ -80,4 +80,4 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 **실행 결과**
 [video](https://github.com/user-attachments/assets/44690444-04f3-4ae1-b4a0-f4e53207c532)
 
-[human_view](https://github.com/user-attachments/assets/c9cb1eb7-e40d-4461-bc0b-1387786c048c)
+[human_view](https://github.com/user-attachments/assets/c9cb1eb7-e40d-4461-bc0b-1387786c048c)1
