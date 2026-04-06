@@ -29,6 +29,7 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 ![image.png](https://github.com/user-attachments/assets/dfd3ffd5-d337-467b-b363-a6b134f76f68)
 
 **실행 결과**
+
 [video](https://github.com/user-attachments/assets/a6c6184c-cda9-4e1e-ac36-c3eea237ea5b)
 
 
@@ -53,6 +54,7 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 ![image](https://github.com/user-attachments/assets/3149c62a-fd65-454a-8b08-d87473ba09e3)
 
 **실행 결과**
+
 [video](https://github.com/user-attachments/assets/93ce2e94-8f77-42c6-ad41-b0ea7787e145)
 
 ## 실습 과제 3
@@ -78,6 +80,7 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 ![image.png](https://github.com/user-attachments/assets/e18a8613-f556-4563-ae51-32cfa8b25d30)
 
 **실행 결과**
+
 [video](https://github.com/user-attachments/assets/44690444-04f3-4ae1-b4a0-f4e53207c532)
 
 [human_view](https://github.com/user-attachments/assets/c9cb1eb7-e40d-4461-bc0b-1387786c048c)
