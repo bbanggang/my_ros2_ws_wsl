@@ -19,9 +19,9 @@ Subscriber 노드
 
 **소스 코드**
 
-https://github.com/bbanggang/my_ros2_ws/tree/main/src/linedetect_rapi5
+src/linedetect_rapi5
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/linedetect_wsl
+src/linedetect_wsl
 
 **실행 결과 1 (5_lt_cw_100rpm_out.mp4 - simulation)**
 

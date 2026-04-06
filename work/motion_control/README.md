@@ -23,11 +23,11 @@
 
 →linedetect_rapi5
 
-https://github.com/bbanggang/my_ros2_ws/tree/main/src/linedetect_rapi5
+src/linedetect_rapi5
 
 → linetracer_sim
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/linetracer_sim
+src/linetracer_sim
 
 → dxl_nano
 

@@ -23,11 +23,11 @@
 
 → camera_ros2
 
-https://github.com/bbanggang/my_ros2_ws/tree/main/src/camera_ros2
+src/camera_ros2
 
 → linetracer_sim
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/linetracer_sim
+src/linetracer_sim
 
 → dxl_nano
 

@@ -10,9 +10,9 @@
 
 **소스 코드**
 
-→ sllidar_node 
+→ sllidar_node
 
-https://github.com/Slamtec/sllidar_ros2/tree/main/src
+src/sllidar_ros2/src
 
 → dxl_nano (node_dxlsub)
 
@@ -20,11 +20,11 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 → lidarsave
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsave
+src/lidarsave
 
 → dxl_wsl (node_dxlpub)
 
-https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_wsl
+src/dxl_wsl
 
 ![image.png](https://github.com/user-attachments/assets/dfd3ffd5-d337-467b-b363-a6b134f76f68)
 
@@ -42,9 +42,9 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_wsl
 
 **소스 코드**
 
-→ lidarsim 
+→ lidarsim
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsim
+src/lidarsim
 
 → dxl_nano (node_dxlsub)
 
@@ -63,13 +63,13 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 **소스 코드**
 
-→ sllidar_node 
+→ sllidar_node
 
-https://github.com/Slamtec/sllidar_ros2/tree/main/src
+src/sllidar_ros2/src
 
 → lidardrive
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidardrive
+src/lidardrive
 
 → dxl_nano (node_dxlsub)
 
@@ -79,3 +79,5 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 **실행 결과**
 [video](https://github.com/user-attachments/assets/44690444-04f3-4ae1-b4a0-f4e53207c532)
+
+[human_view](https://github.com/user-attachments/assets/c9cb1eb7-e40d-4461-bc0b-1387786c048c)

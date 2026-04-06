@@ -53,11 +53,11 @@
 
 → sllidar_node.cpp
 
-https://github.com/Slamtec/sllidar_ros2/tree/main/src
+src/sllidar_ros2/src
 
 → lidarplot
 
-https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarplot
+src/lidarplot
 
 **실행 결과**
     
