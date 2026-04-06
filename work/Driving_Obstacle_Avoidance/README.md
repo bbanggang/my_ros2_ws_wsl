@@ -18,7 +18,7 @@ https://github.com/Slamtec/sllidar_ros2/tree/main/src
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
-→ lidarsave (sllidar_client)
+→ lidarsave
 
 https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsave
 
