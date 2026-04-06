@@ -1,0 +1,74 @@
+# 30_ROS2_장애물회피주행
+
+## 실습 과제 1
+
+### 키보드로 로봇을 원격제어하는 dxl  패키지를 이용하여 강의실 앞쪽에서 책상 사이를 통과하여 뒤쪽으로 주행하고 다시 원위치로 돌아오도록 제어하고 lidarplot 패키지의 스캔 영상(2m x 2m 영역)을 동영상 파일(mp4)로 저장하는 패키지 lidarsave를 작성
+
+- 라이다는 초당 10번 토픽 전송하므로 동영상은 10fps로 저장
+
+![image.png]([image.png](https://github.com/user-attachments/assets/b694b9a5-599b-4f23-8f58-90976d02b8c0))
+
+- 소스 코드
+
+→ sllidar_node 
+
+https://github.com/Slamtec/sllidar_ros2/tree/main/src
+
+→ dxl_nano (node_dxlsub)
+
+https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
+
+→ lidarsave (sllidar_client)
+
+https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsave
+
+→ dxl_wsl (node_dxlpub)
+
+https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_wsl
+
+- 실행 결과
+
+
+## 실습 과제 2
+
+### 장애물 회피 알고리즘을 작성하고 lidarsave 패키지에서 저장한 동영상 파일을 이용하여 시뮬레이션을 수행하는 lidarsim 패키지를 작성
+
+- 스캔 영상에서 에러 계산 → 영상 처리 결과를 동영상으로 저장 → 에러를 이용하여 속도명령을 전송 → 다이내믹셀 구동
+
+![image.png](https://github.com/user-attachments/assets/908a0b95-0369-41ca-baef-398eab910d53)
+
+- 소스 코드
+
+→ lidarsim 
+
+https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidarsim
+
+→ dxl_nano (node_dxlsub)
+
+https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
+
+- 실행 결과
+
+## 실습 과제 3
+
+### 장애물 회피 알고리즘을 구현하여 강의실 앞공간에서 책상사이를 통과하여 뒷공간에 도착하도록 제어하는 lidardrive 패키지 작성
+
+![image.png](https://github.com/user-attachments/assets/e8e7283f-5f91-4b0d-b5f4-55c9a6fd1466)
+
+- 소스 코드
+
+→ sllidar_node 
+
+https://github.com/Slamtec/sllidar_ros2/tree/main/src
+
+→ lidardrive
+
+https://github.com/bbanggang/my_ros2_ws_wsl/tree/main/src/lidardrive
+
+→ dxl_nano (node_dxlsub)
+
+https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
+
+![image.png](image%204.png)
+
+- 실행 결과
