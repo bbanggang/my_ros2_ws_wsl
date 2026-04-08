@@ -26,7 +26,6 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 [src/dxl_wsl](../../src/dxl_wsl)
 
-![image.png](https://github.com/user-attachments/assets/dfd3ffd5-d337-467b-b363-a6b134f76f68)
 
 **실행 결과**
 
@@ -51,7 +50,6 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
-![image](https://github.com/user-attachments/assets/3149c62a-fd65-454a-8b08-d87473ba09e3)
 
 **실행 결과**
 
@@ -77,7 +75,6 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
-![image.png](https://github.com/user-attachments/assets/e18a8613-f556-4563-ae51-32cfa8b25d30)
 
 **실행 결과**
 
