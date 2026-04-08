@@ -81,3 +81,5 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 [video](https://github.com/user-attachments/assets/44690444-04f3-4ae1-b4a0-f4e53207c532)
 
 [human_view](https://github.com/user-attachments/assets/c9cb1eb7-e40d-4461-bc0b-1387786c048c)
+
+[robot_view](https://github.com/user-attachments/assets/02e9f6c3-3a31-4e24-9d76-6a6da68a46a0)
