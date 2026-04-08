@@ -78,10 +78,16 @@ https://github.com/bbanggang/my_ros2_ws/tree/main/src/dxl_nano
 
 **실행 결과**
 
-- Terminal Video
+→ Terminal Video
+
 [video](https://github.com/user-attachments/assets/44690444-04f3-4ae1-b4a0-f4e53207c532)
-- Robot_View and Draw LiDAR Data for OpenCV
+
+→ Robot_View and Draw LiDAR Data for OpenCV
+ 
 [robot_view](https://github.com/user-attachments/assets/330b7746-32f1-4ec0-97ad-69e61695613f)
-- Human_View
+
+→ Human_View
+
 [human_view](https://github.com/user-attachments/assets/4ffc8c2b-4a06-4cf9-bb65-56af8d2e6edd)
+
 
