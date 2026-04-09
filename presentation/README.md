@@ -126,8 +126,11 @@ video_writer.write(image);
 | `s` / `space` | 정지 | 0 | 0 |
 
 ---
+
 ### 실행 결과
+
 [video](https://github.com/user-attachments/assets/a6c6184c-cda9-4e1e-ac36-c3eea237ea5b)
+
 ---
 
 ## 실습 과제 2 — 시뮬레이션 장애물 회피 (lidarsim)
@@ -245,9 +248,13 @@ vel.y = -(50 + k * error) (오른쪽 바퀴)
 - `s` 키: 주행 시작 / `q` 키: 정지
 
 ---
+
 ### 실행 결과
+
 [video](https://github.com/user-attachments/assets/93ce2e94-8f77-42c6-ad41-b0ea7787e145)
+
 ---
+
 
 
 ## 실습 과제 3 — 실제 장애물 회피 주행 (lidardrive)
