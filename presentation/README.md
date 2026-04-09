@@ -2,31 +2,37 @@
 
 ## 전체 시스템 구성
 
-본 프로젝트는 **RPi5 보드(rapi5)** 와 **WSL PC** 2개의 PC가 ROS2 토픽으로 통신한다.
+### 프로젝트 개요
 
-```mermaid
-graph LR
-    subgraph RPi5["🤖 RPi5 (로봇)"]
-        LIDAR["LIDAR 센서<br/>(Rplidar C1)"]
-        SL["sllidar_node<br/>(sllidar_ros2)"]
-        DXL_NANO["node_dxlsub<br/>(dxl_nano)"]
-        MOTOR["다이내믹셀 모터"]
-        LIDAR --> SL
-        DXL_NANO --> MOTOR
-    end
+본 프로젝트는 LIDAR 센서를 활용한 **장애물 회피 자율주행 시스템** 구현을 목표로 한다. 총 3단계의 실습 과제로 구성되며, 각 단계는 이전 단계의 결과물을 기반으로 발전시키는 구조다.
 
-    subgraph WSL["💻 WSL PC"]
-        WSL_NODE["WSL 노드<br/>(과제별 상이)"]
-    end
+- **과제 1** : 로봇을 키보드로 원격 조종하며 LIDAR 스캔 영상을 MP4로 저장
+- **과제 2** : 저장된 영상을 재생하며 장애물 회피 알고리즘을 시뮬레이션으로 검증
+- **과제 3** : 검증된 알고리즘을 실제 LIDAR와 연결하여 자율 장애물 회피 주행 구현
 
-    SL -->|"/scan<br/>LaserScan"| WSL_NODE
-    WSL_NODE -->|"vel_cmd_topic<br/>Vector3"| DXL_NANO
-```
+RPi5 보드(로봇)와 WSL PC(알고리즘 처리) 2개의 PC가 동일 네트워크에서 ROS2 토픽으로 통신한다. 네트워크는 Bridge 모드를 사용하며, Windows PC는 이더넷, WSL2와 RPi5는 Wi-Fi로 연결된다.
+
+---
+
+### 하드웨어 사양
+
+| 항목 | RPi5 (로봇) | WSL PC |
+|------|------------|--------|
+| **보드 / OS** | Raspberry Pi 5 / Ubuntu 24.04 | Windows 11 / WSL2 Ubuntu 24.04 |
+| **ROS2** | Jazzy | Jazzy |
+| **LIDAR** | SLAMTEC Rplidar C1 | — |
+| **카메라** | IMX219 (Raspberry Pi Camera v2) | — |
+| **모터** | 다이내믹셀 MX-12W | — |
+| **통신** | Wi-Fi | Wi-Fi (WSL2 Bridge) |
+
+---
+
+### ROS2 토픽 구성
 
 | 토픽 | 메시지 타입 | 발행 노드 | 구독 노드 |
 |------|------------|-----------|-----------|
-| `/scan` | `sensor_msgs/LaserScan` | `sllidar_node` (RPi5) | WSL 노드 |
-| `vel_cmd_topic` | `geometry_msgs/Vector3` | WSL 노드 | `node_dxlsub` (RPi5) |
+| `/scan` | `sensor_msgs/LaserScan` | `sllidar_node` (RPi5) | `sllidar_client` (WSL) |
+| `vel_cmd_topic` | `geometry_msgs/Vector3` | `sllidar_client` (WSL) | `node_dxlsub` (RPi5) |
 
 ---
 
@@ -36,29 +42,7 @@ graph LR
 
 ### 블록도
 
-```mermaid
-graph LR
-    subgraph RPi5["🤖 RPi5"]
-        LIDAR["Rplidar C1"]
-        SL["sllidar_node"]
-        DXL_NANO["node_dxlsub<br/>(dxl_nano)"]
-        MOTOR["다이내믹셀"]
-        LIDAR --> SL
-        DXL_NANO --> MOTOR
-    end
-
-    subgraph WSL["💻 WSL PC"]
-        LSAVE["lidarsave<br/>(scanCb)"]
-        DXLPUB["node_dxlpub<br/>(dxl_wsl)"]
-        VIDEO[("scan_video.mp4")]
-        KB["⌨️ 키보드<br/>f/b/l/r/s"]
-        KB --> DXLPUB
-        LSAVE --> VIDEO
-    end
-
-    SL -->|"/scan<br/>LaserScan"| LSAVE
-    DXLPUB -->|"vel_cmd_topic<br/>Vector3"| DXL_NANO
-```
+![실습 과제 1 블록도](images/task1_block_diagram.png)
 
 ### 노드 구성
 
@@ -166,31 +150,7 @@ else vel1 = goal1;
 
 ### 블록도
 
-```mermaid
-graph LR
-    subgraph WSL["💻 WSL PC"]
-        VIDEO[("scan_video.mp4<br/>(과제1 결과)")]
-        TIMER["100ms 타이머"]
-        PRE["preprocess_image()"]
-        CC["connectedComponents()"]
-        FIND["find_target_line()"]
-        DRAW["draw_result()"]
-        VEL["속도 계산<br/>error → vel"]
-        PUB["vel_cmd_topic 발행"]
-        SAVE[("result_video.mp4")]
-        VIDEO --> TIMER
-        TIMER --> PRE --> CC --> FIND --> DRAW --> VEL --> PUB
-        DRAW --> SAVE
-    end
-
-    subgraph RPi5["🤖 RPi5"]
-        DXL_NANO["node_dxlsub<br/>(dxl_nano)"]
-        MOTOR["다이내믹셀"]
-        DXL_NANO --> MOTOR
-    end
-
-    PUB -->|"vel_cmd_topic<br/>Vector3"| DXL_NANO
-```
+![실습 과제 2 블록도](images/task2_block_diagram.png)
 
 ### 노드 구성
 
@@ -306,35 +266,7 @@ vel.y = -(50 + k * error) (오른쪽 바퀴)
 
 ### 블록도
 
-```mermaid
-graph LR
-    subgraph RPi5["🤖 RPi5"]
-        LIDAR["Rplidar C1"]
-        SL["sllidar_node"]
-        DXL_NANO["node_dxlsub<br/>(dxl_nano)"]
-        MOTOR["다이내믹셀"]
-        LIDAR --> SL
-        DXL_NANO --> MOTOR
-    end
-
-    subgraph WSL["💻 WSL PC"]
-        CB["mysub_callback()"]
-        ROT["방향 보정<br/>(180° 회전 + 좌우 반전)"]
-        PRE["preprocess_image()"]
-        CC["connectedComponents()"]
-        FIND["find_target_line()"]
-        DRAW["draw_result()"]
-        VEL["속도 계산<br/>(직진 조건 포함)"]
-        PUB["vel_cmd_topic 발행"]
-        SAVE[("result_video.mp4")]
-
-        CB --> ROT --> PRE --> CC --> FIND --> DRAW --> VEL --> PUB
-        DRAW --> SAVE
-    end
-
-    SL -->|"/scan<br/>LaserScan"| CB
-    PUB -->|"vel_cmd_topic<br/>Vector3"| DXL_NANO
-```
+![실습 과제 3 블록도](images/task3_block_diagram.png)
 
 ### 노드 구성
 
