@@ -23,9 +23,54 @@
 static cv::VideoWriter video_writer;
 static bool is_video_init = false;
 
+// 스캔 데이터를 이미지로 변환하여 화면에 출력
+static cv::Mat visualizeScan(sensor_msgs::msg::LaserScan::SharedPtr scan, int count) {
+  cv::Mat image(500, 500, CV_8UC3, cv::Scalar(255, 255, 255));
+
+  // 중심에 십자 표시 (로봇 위치)
+  cv::line(image, cv::Point(250, 245), cv::Point(250, 255), cv::Scalar(0, 0, 0), 1);
+  cv::line(image, cv::Point(245, 250), cv::Point(255, 250), cv::Scalar(0, 0, 0), 1);
+
+  // 1m = 100px
+  double scale = 100.0;
+
+  for (int i = 0; i < count; i++) {
+    float distance = scan->ranges[i];
+    float angle_rad = scan->angle_min + scan->angle_increment * i;
+
+    if (std::isfinite(distance) && distance > 0) {
+      int x = 250 + (int)(distance * scale * sin(angle_rad));
+      int y = 250 + (int)(distance * scale * cos(angle_rad));
+
+      if (x >= 0 && x < 500 && y >= 0 && y < 500) {
+        cv::circle(image, cv::Point(x, y), 2, cv::Scalar(0, 0, 255), -1);
+      }
+    }
+  }
+
+  cv::imshow("LIDAR Scan", image);
+  cv::waitKey(1);
+
+  return image;
+}
+
+// 이미지를 동영상 파일에 저장
+static void saveVideo(const cv::Mat& image) {
+  if (!is_video_init) {
+    video_writer.open("/home/linux/ros2_ws/video/ros2_basic_30_test1.mp4",
+                      cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(500, 500), true);
+    is_video_init = true;
+    printf("[SLLIDAR INFO]: Video recording started.\n");
+  }
+
+  if (video_writer.isOpened()) {
+    video_writer.write(image);
+  }
+}
+
 static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
   int count = scan->scan_time / scan->time_increment;
-  
+
   // 안전을 위해 ranges 사이즈로 count 재설정 (데이터 개수 불일치 방지)
   if(scan->ranges.size() > 0) count = scan->ranges.size();
 
@@ -33,62 +78,8 @@ static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
   printf("[SLLIDAR INFO]: angle_range : [%f, %f]\n", RAD2DEG(scan->angle_min),
          RAD2DEG(scan->angle_max));
 
-  // 1. 스캔 영상 그리기 준비 (500x500 검은색 배경)
-  cv::Mat image(500, 500, CV_8UC3, cv::Scalar(255, 255, 255));
-  
-  // 중심점 좌표
-  cv::Point center(250, 250);
-
-  // 십자가 그리기 (흰색, 중심 표시)
-  cv::line(image, cv::Point(250, 245), cv::Point(250, 255), cv::Scalar(0, 0, 0), 1);
-  cv::line(image, cv::Point(245, 250), cv::Point(255, 250), cv::Scalar(0, 0, 0), 1);
-
-  // 1m = 100px으로 5m x 5m 창 생성
-  double scale = 100.0; 
-
-  for (int i = 0; i < count; i++) {
-    // float degree = RAD2DEG(scan->angle_min + scan->angle_increment * i);
-    
-    // 거리 데이터 (m 단위)
-    float distance = scan->ranges[i];
-    float angle_rad = scan->angle_min + scan->angle_increment * i;
-    
-
-    // 유효한 거리 데이터인지 확인
-    if (std::isfinite(distance) && distance > 0) {
-        
-        // x: 오른쪽이 증가 (+ sin)
-        // y: 위쪽이 감소 (- cos) -> 0도가 위를 향함
-        int x = 250 + (int)(distance * scale * sin(angle_rad));
-        int y = 250 + (int)(distance * scale * cos(angle_rad));
-
-
-        // 이미지 범위 내에 있는지 확인 후 그리기
-        if (x >= 0 && x < 500 && y >= 0 && y < 500) {
-            cv::circle(image, cv::Point(x, y), 2, cv::Scalar(0, 0, 255), -1);
-        }
-
-
-    }
-    // 터미널 출력은 너무 많으므로 주석 처리하거나 필요시 유지
-    // printf("[SLLIDAR INFO]: angle-distance : [%f, %f]\n", degree, scan->ranges[i]);
-  }
-
-  // 화면에 영상 출력
-  cv::imshow("LIDAR Scan", image);
-  cv::waitKey(1); // 1ms 대기 (화면 갱신을 위해 필수)
-
-  // 동영상 저장 코드
-  if (!is_video_init) {
-      // 파일명, 코덱, FPS, 해상도 설정
-      video_writer.open("/home/linux/ros2_ws/video/ros2_basic_30_test1.mp4", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(500, 500), true);
-      is_video_init = true;
-      printf("[SLLIDAR INFO]: Video recording started.\n");
-  }
-
-  if (video_writer.isOpened()) {
-      video_writer.write(image);
-  }
+  cv::Mat image = visualizeScan(scan, count);
+  saveVideo(image);
 }
 
 int main(int argc, char **argv) {
@@ -105,7 +96,7 @@ int main(int argc, char **argv) {
 
   // 종료 시 비디오 파일 닫기
   if (video_writer.isOpened()) {
-      video_writer.release();
+    video_writer.release();
   }
 
   return 0;

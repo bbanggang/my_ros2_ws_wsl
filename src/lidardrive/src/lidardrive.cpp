@@ -231,9 +231,6 @@ void LineDetector::mysub_callback(const sensor_msgs::msg::LaserScan::SharedPtr s
 
     pub_->publish(vel);
 
-    auto endTime = chrono::steady_clock::now();
-    float totalTime = chrono::duration<float, milli>(endTime - startTime).count();
-
     // 스캔 영상 화면 출력 및 동영상 저장 코드
     static cv::VideoWriter video_writer; // static으로 선언하여 함수가 종료되어도 객체 유지
     static bool is_writer_initialized = false; // 초기화 여부 확인 플래그
@@ -256,6 +253,8 @@ void LineDetector::mysub_callback(const sensor_msgs::msg::LaserScan::SharedPtr s
         video_writer.write(result);
     }
 
+    auto endTime = chrono::steady_clock::now();
+    float totalTime = chrono::duration<float, milli>(endTime - startTime).count();
 
     RCLCPP_INFO(this->get_logger(), "Received Image : err:%d, leftvel: %.2f, rightvel: %.2f, time:%.2f ms", error, vel.x, vel.y, totalTime);
 
