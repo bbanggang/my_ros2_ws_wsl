@@ -1,113 +1,121 @@
-/*
- * SLLIDAR ROS2 CLIENT
- *
- * Copyright (c) 2009 - 2014 RoboPeak Team
- * http://www.robopeak.com
- * Copyright (c) 2014 - 2022 Shanghai Slamtec Co., Ltd.
- * http://www.slamtec.com
- *
- */
-
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
-#include <cmath>
-#include <math.h>
-// OpenCV 라이브러리 추가
 #include <opencv2/opencv.hpp>
-#include <rclcpp/executors.hpp>
-#include <rclcpp/node.hpp>
+#include <cmath>
 
-#define RAD2DEG(x) ((x)*180./M_PI)
+// 이미지 크기 및 스케일 설정
+static constexpr int    IMG_SIZE  = 600;
+static constexpr int    CENTER    = IMG_SIZE / 2;
+static constexpr double SCALE     = 80.0;   // 1m = 80px  (최대 ~3.75m 표시)
+static constexpr double MAX_RANGE = 3.5;    // TurtleBot3 LiDAR 최대 유효 거리 (m)
 
-// 동영상 저장을 위한 Writer 객체와 초기화 플래그 (static으로 선언)
-static cv::VideoWriter video_writer;
-static bool is_video_init = false;
+static const std::string VIDEO_PATH = "/home/linux/ros2_ws/video/gazebo_lidar.mp4";
 
-static void scanCb(sensor_msgs::msg::LaserScan::SharedPtr scan) {
-  int count = scan->scan_time / scan->time_increment;
-  
-  // 안전을 위해 ranges 사이즈로 count 재설정 (데이터 개수 불일치 방지)
-  if(scan->ranges.size() > 0) count = scan->ranges.size();
+class LidarViewer : public rclcpp::Node
+{
+public:
+  LidarViewer() : Node("lidar_viewer")
+  {
+    // Gazebo는 BEST_EFFORT로 퍼블리시 → SensorDataQoS 사용
+    sub_ = create_subscription<sensor_msgs::msg::LaserScan>(
+      "scan", rclcpp::SensorDataQoS(),
+      std::bind(&LidarViewer::scan_cb, this, std::placeholders::_1));
 
-  printf("[SLLIDAR INFO]: I heard a laser scan %s[%d]:\n", scan->header.frame_id.c_str(), count);
-  printf("[SLLIDAR INFO]: angle_range : [%f, %f]\n", RAD2DEG(scan->angle_min),
-         RAD2DEG(scan->angle_max));
+    RCLCPP_INFO(get_logger(), "LidarViewer started. Subscribing to /scan");
+  }
 
-  // 1. 스캔 영상 그리기 준비 (500x500 검은색 배경)
-  cv::Mat image(500, 500, CV_8UC3, cv::Scalar(255, 255, 255));
-  
-  // 중심점 좌표
-  cv::Point center(250, 250);
+private:
+  rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr sub_;
+  cv::VideoWriter writer_;
+  bool video_init_ = false;
 
-  // 십자가 그리기 (흰색, 중심 표시)
-  cv::line(image, cv::Point(250, 245), cv::Point(250, 255), cv::Scalar(0, 0, 0), 1);
-  cv::line(image, cv::Point(245, 250), cv::Point(255, 250), cv::Scalar(0, 0, 0), 1);
+  // 거리 참조 원, 십자선, 방향 레이블을 배경으로 그린다
+  void draw_background(cv::Mat &img)
+  {
+    img = cv::Mat(IMG_SIZE, IMG_SIZE, CV_8UC3, cv::Scalar(30, 30, 30));
 
-  // 거리 환산 비율 설정: 10m가 500px이므로, 반경 5m가 250px에 해당.
-  // 즉, 1m = 50px 입니다.
-  double scale = 100.0; 
-
-  for (int i = 0; i < count; i++) {
-    // float degree = RAD2DEG(scan->angle_min + scan->angle_increment * i);
-    
-    // 거리 데이터 (m 단위)
-    float distance = scan->ranges[i];
-    float angle_rad = scan->angle_min + scan->angle_increment * i;
-    
-
-    // 유효한 거리 데이터인지 확인
-    if (std::isfinite(distance) && distance > 0) {
-        
-        // x: 오른쪽이 증가 (+ sin)
-        // y: 위쪽이 감소 (- cos) -> 0도가 위를 향함
-        int x = 250 + (int)(distance * scale * sin(angle_rad));
-        
-        int y = 250 + (int)(distance * scale * cos(angle_rad));
-
-        // 이미지 범위 내에 있는지 확인 후 그리기
-        if (x >= 0 && x < 500 && y >= 0 && y < 500) {
-            cv::circle(image, cv::Point(x, y), 2, cv::Scalar(0, 0, 255), -1);
-        }
-
-
+    // 1m / 2m / 3m 참조 원
+    for (int r_m = 1; r_m <= 3; ++r_m) {
+      int r_px = static_cast<int>(r_m * SCALE);
+      cv::circle(img, {CENTER, CENTER}, r_px, cv::Scalar(70, 70, 70), 1);
+      cv::putText(img, std::to_string(r_m) + "m",
+                  {CENTER + r_px + 3, CENTER - 4},
+                  cv::FONT_HERSHEY_PLAIN, 0.9, cv::Scalar(100, 100, 100), 1);
     }
-    // 터미널 출력은 너무 많으므로 주석 처리하거나 필요시 유지
-    // printf("[SLLIDAR INFO]: angle-distance : [%f, %f]\n", degree, scan->ranges[i]);
+
+    // 십자선
+    cv::line(img, {CENTER, 0},       {CENTER, IMG_SIZE}, cv::Scalar(60, 60, 60), 1);
+    cv::line(img, {0,      CENTER},  {IMG_SIZE, CENTER}, cv::Scalar(60, 60, 60), 1);
+
+    // 방향 레이블 (로봇 기준: F=앞, B=뒤, L=좌, R=우)
+    cv::putText(img, "F", {CENTER - 7, 18},            cv::FONT_HERSHEY_PLAIN, 1.2, cv::Scalar(0, 220, 0), 2);
+    cv::putText(img, "B", {CENTER - 7, IMG_SIZE - 6},  cv::FONT_HERSHEY_PLAIN, 1.2, cv::Scalar(0, 220, 0), 2);
+    cv::putText(img, "L", {6,          CENTER + 6},    cv::FONT_HERSHEY_PLAIN, 1.2, cv::Scalar(0, 220, 0), 2);
+    cv::putText(img, "R", {IMG_SIZE - 18, CENTER + 6}, cv::FONT_HERSHEY_PLAIN, 1.2, cv::Scalar(0, 220, 0), 2);
+
+    // 로봇 중심 점
+    cv::circle(img, {CENTER, CENTER}, 5, cv::Scalar(0, 255, 255), -1);
   }
 
-  // 화면에 영상 출력
-  cv::imshow("LIDAR Scan", image);
-  cv::waitKey(1); // 1ms 대기 (화면 갱신을 위해 필수)
+  void scan_cb(const sensor_msgs::msg::LaserScan::SharedPtr scan)
+  {
+    cv::Mat img;
+    draw_background(img);
 
-  // 동영상 저장 코드
-  if (!is_video_init) {
-      // 파일명, 코덱, FPS, 해상도 설정
-      video_writer.open("/home/linux/ros2_ws/video/scan_video.mp4", cv::VideoWriter::fourcc('M', 'J', 'P', 'G'), 10, cv::Size(500, 500), true);
-      is_video_init = true;
-      printf("[SLLIDAR INFO]: Video recording started.\n");
+    int count = static_cast<int>(scan->ranges.size());
+
+    for (int i = 0; i < count; ++i) {
+      float dist  = scan->ranges[i];
+      float angle = scan->angle_min + scan->angle_increment * i;
+
+      if (!std::isfinite(dist) || dist <= scan->range_min || dist > MAX_RANGE)
+        continue;
+
+      // ROS 로봇 프레임 → 화면 좌표
+      //   로봇 앞(angle=0)  → 화면 위  (sy 감소)
+      //   로봇 좌(angle>0)  → 화면 왼쪽 (sx 감소)
+      int sx = CENTER - static_cast<int>(dist * SCALE * std::sin(angle));
+      int sy = CENTER - static_cast<int>(dist * SCALE * std::cos(angle));
+
+      if (sx < 0 || sx >= IMG_SIZE || sy < 0 || sy >= IMG_SIZE)
+        continue;
+
+      // 가까울수록 빨강, 멀수록 파랑으로 색상 그라디언트
+      float ratio = dist / MAX_RANGE;
+      int   b     = static_cast<int>(ratio * 255);
+      int   r     = static_cast<int>((1.0f - ratio) * 255);
+      cv::circle(img, {sx, sy}, 2, cv::Scalar(b, 50, r), -1);
+    }
+
+    // HUD: 포인트 수 표시
+    std::string hud = "points: " + std::to_string(count);
+    cv::putText(img, hud, {6, IMG_SIZE - 8},
+                cv::FONT_HERSHEY_PLAIN, 1.0, cv::Scalar(180, 180, 180), 1);
+
+    cv::imshow("Gazebo LiDAR", img);
+    cv::waitKey(1);
+
+    // 첫 프레임에서 VideoWriter 초기화
+    if (!video_init_) {
+      writer_.open(VIDEO_PATH,
+                   cv::VideoWriter::fourcc('M', 'J', 'P', 'G'),
+                   10, cv::Size(IMG_SIZE, IMG_SIZE), true);
+      video_init_ = true;
+      if (writer_.isOpened())
+        RCLCPP_INFO(get_logger(), "Recording: %s", VIDEO_PATH.c_str());
+      else
+        RCLCPP_WARN(get_logger(), "Video writer failed to open");
+    }
+
+    if (writer_.isOpened())
+      writer_.write(img);
   }
+};
 
-  if (video_writer.isOpened()) {
-      video_writer.write(image);
-  }
-}
-
-int main(int argc, char **argv) {
+int main(int argc, char **argv)
+{
   rclcpp::init(argc, argv);
-
-  auto node = rclcpp::Node::make_shared("sllidar_client");
-
-  auto lidar_info_sub = node->create_subscription<sensor_msgs::msg::LaserScan>(
-                        "scan", rclcpp::SensorDataQoS(), scanCb);
-
-  rclcpp::spin(node);
-
+  rclcpp::spin(std::make_shared<LidarViewer>());
   rclcpp::shutdown();
-
-  // 종료 시 비디오 파일 닫기
-  if (video_writer.isOpened()) {
-      video_writer.release();
-  }
-
   return 0;
 }
